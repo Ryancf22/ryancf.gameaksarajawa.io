@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pasangkan Aksara Jawa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Javanese&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #fffbe6;
+      --text-color: #3e2807;
+      --aksara-bg: #f4d35e;
+      --latin-bg: #a3d2ca;
+      --btn-bg: #6ab04c;
+    }
+    body.dark {
+      --bg-color: #2f2f2f;
+      --text-color: #ffffff;
+      --aksara-bg: #e1b12c;
+      --latin-bg: #44bd32;
+      --btn-bg: #487eb0;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: url('latar game.gif') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+      margin: 0;
+      color: var(--text-color);
+    }
+    .game-container, .end-screen {
+      background: var(--bg-color);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 900px;
+      margin-top: 20px;
+    }
+    h1, h2 {
+      color: var(--text-color);
+    }
+    .grid {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .aksara-box, .latin-label {
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+      font-size: 1.8em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      text-align: center;
+      white-space: pre-line;
+    }
+    .aksara-box {
+      font-family: 'Noto Sans Javanese', 'Poppins', sans-serif;
+      background-color: var(--aksara-bg);
+      border: 2px dashed #9c6b1c;
+    }
+    .latin-label {
+      background-color: var(--latin-bg);
+      cursor: grab;
+      border: 2px solid #37806b;
+    }
+    .matched {
+      background-color: #b8e994 !important;
+      border-color: #4caf50 !important;
+    }
+    .info, .status-bar {
+      font-weight: bold;
+      font-size: 1.2em;
+      color: var(--text-color);
+      margin-top: 10px;
+    }
+    button, select {
+      padding: 8px 16px;
+      margin: 10px;
+      font-size: 1em;
+      border-radius: 8px;
+      border: none;
+      background-color: var(--btn-bg);
+      color: white;
+      cursor: pointer;
+    }
+    .navigation {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .home-fixed {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 999;
+    }
+    .home-fixed button {
+      background: none;
+      border: none;
+      font-size: 1.8em;
+      cursor: pointer;
+      color: white;
+    }
+    .toggle-mode {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 1.2em;
+      background: none;
+      border: 2px solid white;
+      border-radius: 10px;
+      padding: 5px 10px;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<button class="toggle-mode" onclick="toggleMode()">🌕/🌑</button>
+<div class="home-fixed">
+  <button onclick="confirmHome()">☁️🏠</button>
+</div>
+
+<div class="game-container" id="gameContainer">
+  <h1>Pasangkan Aksara Jawa</h1>
+  <div>
+    Jumlah Pasangan:
+    <select id="level">
+      <option value="5">5</option>
+      <option value="7">7</option>
+      <option value="10">10</option>
+    </select>
+    <button onclick="startGame()">Mulai</button>
+  </div>
+  <div class="status-bar">
+    Soal <span id="questionNow">1</span> dari 5 |
+    ⏱️ Waktu: <span id="timer">0</span> detik |
+    🎯 Skor: <span id="score">0</span>
+  </div>
+  <div class="grid" id="aksaraArea"></div>
+  <hr>
+  <div class="grid" id="latinArea"></div>
+  <div class="info" id="info">Tarik huruf latin ke kotak aksara yang sesuai.</div>
+  <div class="navigation" id="navArea"></div>
+</div>
+
+<div class="end-screen" id="endScreen" style="display:none;">
+  <h2>🎉 Permainan Selesai!</h2>
+  <p>Total Waktu: <span id="totalTime"></span> detik</p>
+  <p>Skor Akhir: <span id="finalScore"></span></p>
+  <div id="reviewAnswers"></div>
+  <button onclick="startGame()">🔁 Main Ulang</button>
+  <button onclick="location.href='sinau aksara jawa.html'">🏠 Menu</button>
+</div>
+
+<audio id="audioBenar" src="https://cdn.pixabay.com/audio/2022/03/15/audio_1f173ec8e6.mp3"></audio>
+<audio id="audioSalah" src="https://cdn.pixabay.com/audio/2022/03/15/audio_2703296fc0.mp3"></audio>
+<audio id="bgMusic" src="https://cdn.pixabay.com/audio/2023/03/15/audio_71c1b9ef8d.mp3" autoplay loop></audio>
+
+<script>
+  const dataPool = [
+    { aksara: "ꦏ", latin: "ka" }, { aksara: "ꦔ", latin: "nga" }, { aksara: "ꦕ", latin: "ca" },
+    { aksara: "ꦗ", latin: "ja" }, { aksara: "ꦚ", latin: "nya" }, { aksara: "ꦛ", latin: "tha" },
+    { aksara: "ꦝ", latin: "dha" }, { aksara: "ꦤ", latin: "na" }, { aksara: "ꦠ", latin: "ta" },
+    { aksara: "ꦣ", latin: "da" }, { aksara: "ꦥ", latin: "pa" }, { aksara: "ꦧ", latin: "ba" },
+    { aksara: "ꦩ", latin: "ma" }, { aksara: "ꦪ", latin: "ya" }, { aksara: "ꦫ", latin: "ra" },
+    { aksara: "ꦭ", latin: "la" }, { aksara: "ꦮ", latin: "wa" }, { aksara: "ꦯ", latin: "sha" },
+    { aksara: "ꦱ", latin: "sa" }, { aksara: "ꦲ", latin: "ha" }
+  ];
+
+  let level = 5;
+  let score = 0;
+  let totalSeconds = 0;
+  let questionIndex = 0;
+  let questions = [];
+  let correctMatches = 0;
+  let timerInterval;
+  let answerHistory = [];
+
+  function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+  }
+
+  function startGame() {
+    level = parseInt(document.getElementById("level").value);
+    questions = Array.from({ length: 5 }, () => shuffle([...dataPool]).slice(0, level));
+    score = 0;
+    totalSeconds = 0;
+    questionIndex = 0;
+    answerHistory = [];
+    document.getElementById("score").textContent = score;
+    document.getElementById("gameContainer").style.display = "block";
+    document.getElementById("endScreen").style.display = "none";
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      totalSeconds++;
+      document.getElementById("timer").textContent = totalSeconds;
+    }, 1000);
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    const currentData = questions[questionIndex];
+    correctMatches = 0;
+    document.getElementById("questionNow").textContent = questionIndex + 1;
+    document.getElementById("info").textContent = "Tarik huruf latin ke kotak aksara yang sesuai.";
+
+    const aksaraArea = document.getElementById("aksaraArea");
+    const latinArea = document.getElementById("latinArea");
+    aksaraArea.innerHTML = "";
+    latinArea.innerHTML = "";
+
+    currentData.forEach(item => {
+      const box = document.createElement("div");
+      box.className = "aksara-box";
+      box.innerText = item.aksara;
+      box.dataset.latin = item.latin;
+      box.ondragover = e => e.preventDefault();
+      box.ondrop = e => handleDrop(e, box, item.latin);
+      aksaraArea.appendChild(box);
+    });
+
+    shuffle([...currentData]).forEach(item => {
+      const label = document.createElement("div");
+      label.className = "latin-label";
+      label.innerText = item.latin;
+      label.draggable = true;
+      label.ondragstart = e => e.dataTransfer.setData("text", item.latin);
+      latinArea.appendChild(label);
+    });
+
+    const navArea = document.getElementById("navArea");
+    navArea.innerHTML = "";
+    if (questionIndex > 0) {
+      const backBtn = document.createElement("button");
+      backBtn.innerText = "⬅️ Kembali";
+      backBtn.onclick = () => { questionIndex--; loadQuestion(); };
+      navArea.appendChild(backBtn);
+    }
+    if (questionIndex < 4) {
+      const nextBtn = document.createElement("button");
+      nextBtn.innerText = "➡️ Lanjut";
+      nextBtn.onclick = () => { questionIndex++; loadQuestion(); };
+      navArea.appendChild(nextBtn);
+    }
+  }
+
+  function handleDrop(e, box, correctLatin) {
+    const dragged = e.dataTransfer.getData("text");
+    if (dragged === correctLatin && !box.classList.contains("matched")) {
+      box.classList.add("matched");
+      box.innerText += "\n(" + dragged + ")";
+      correctMatches++;
+      score += 10;
+      document.getElementById("score").textContent = score;
+      document.getElementById("info").textContent = "✅ Benar!";
+      document.getElementById("audioBenar").play();
+
+      if (correctMatches === questions[questionIndex].length) {
+        answerHistory.push({ soal: questions[questionIndex] });
+        setTimeout(() => {
+          questionIndex++;
+          if (questionIndex < 5) {
+            loadQuestion();
+          } else {
+            endGame();
+          }
+        }, 1000);
+      }
+    } else {
+      score -= 2;
+      document.getElementById("score").textContent = score;
+      document.getElementById("info").textContent = "❌ Salah! Coba lagi.";
+      document.getElementById("audioSalah").play();
+    }
+  }
+
+  function endGame() {
+    clearInterval(timerInterval);
+    document.getElementById("gameContainer").style.display = "none";
+    document.getElementById("endScreen").style.display = "block";
+    document.getElementById("totalTime").textContent = totalSeconds;
+    document.getElementById("finalScore").textContent = score;
+
+    const reviewDiv = document.getElementById("reviewAnswers");
+    reviewDiv.innerHTML = '<h3>📝 Rangkuman Soal:</h3>';
+    answerHistory.forEach((item, i) => {
+      const soal = item.soal.map(d => `${d.aksara} = ${d.latin}`).join(', ');
+      reviewDiv.innerHTML += `<p><strong>Soal ${i + 1}</strong>: ${soal}</p>`;
+    });
+  }
+
+  function confirmHome() {
+    if (confirm("Yakin kembali ke menu utama? Progres akan hilang.")) {
+      location.href = 'sinau aksara jawa.html';
+    }
+  }
+
+  function toggleMode() {
+    document.body.classList.toggle('dark');
+  }
+</script>
+</body>
+</html>

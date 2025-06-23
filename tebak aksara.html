@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tebak Aksara Jawa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #fffbe6;
+      --text-color: #3e2807;
+      --aksara-color: #3e2807;
+      --button-bg: #f4d35e;
+      --button-text: #4a2c0a;
+      --navigation-bg: #5c3d1c;
+      --navigation-hover: #7a541c;
+    }
+
+    body.dark {
+      --bg-color: #1e1e1e;
+      --text-color: #f5f5f5;
+      --aksara-color: #ffcc00;
+      --button-bg: #333;
+      --button-text: #f5f5f5;
+      --navigation-bg: #444;
+      --navigation-hover: #666;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: url('latar game.gif') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+      margin: 0;
+      color: var(--text-color);
+    }
+
+    .game-container, .end-screen {
+      background: var(--bg-color);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+    }
+
+    h1 {
+      font-size: 2em;
+      color: var(--text-color);
+    }
+
+    #status-bar, #timer {
+      font-size: 1em;
+      margin-bottom: 10px;
+      color: var(--text-color);
+    }
+
+    #timer {
+      font-weight: bold;
+      color: #d32f2f;
+    }
+
+    .aksara {
+      font-size: 80px;
+      margin: 20px 0;
+      color: var(--aksara-color);
+    }
+
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .choice-button {
+      padding: 15px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 10px;
+      background-color: var(--button-bg);
+      color: var(--button-text);
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .choice-button:hover {
+      filter: brightness(90%);
+    }
+
+    .feedback {
+      margin-top: 20px;
+      font-size: 1.3em;
+      font-weight: bold;
+    }
+
+    .navigation {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .navigation button {
+      font-size: 1.5em;
+      background: var(--navigation-bg);
+      border: none;
+      cursor: pointer;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .navigation button:hover {
+      background-color: var(--navigation-hover);
+    }
+
+    .end-screen h2 {
+      color: var(--text-color);
+    }
+
+    .end-screen button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: var(--button-bg);
+      color: var(--button-text);
+    }
+
+    #answerPreview {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    /* Tombol Home dan Mode Gelap */
+    .top-fixed {
+      position: fixed;
+      top: 20px;
+      display: flex;
+      gap: 10px;
+      left: 20px;
+      z-index: 999;
+    }
+
+    .top-fixed button {
+      background: none;
+      border: none;
+      font-size: 1.8em;
+      cursor: pointer;
+      color: var(--text-color);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Tombol Home dan Toggle Mode -->
+<div class="top-fixed">
+  <button onclick="toggleMode()">🌙/☀️</button>
+  <button onclick="confirmHome()">🏠</button>
+</div>
+
+<!-- Game Container -->
+<div class="game-container" id="gameContainer">
+  <h1>Tebak Aksara Jawa</h1>
+  <div id="status-bar">Soal <span id="questionNumber">1</span> dari <span id="totalQuestions">10</span> | Skor: <span id="score">0</span></div>
+  <div id="timer">⏱️ Waktu: 10 detik</div>
+  <div class="aksara" id="aksara">ꦏ</div>
+  <div class="choices" id="choices"></div>
+  <div class="feedback" id="feedback"></div>
+  <div class="navigation" id="navigation"></div>
+</div>
+
+<!-- Tampilan Akhir -->
+<div class="end-screen" id="endScreen" style="display:none;">
+  <h2>🎉 Permainan Selesai!</h2>
+  <p style="font-size: 1.3em;">Skor Akhir Kamu: <span id="finalScore">0</span></p>
+  <div style="margin-top: 20px;">
+    <button onclick="location.href='sinau aksara jawa.html'">🏠 Kembali ke Menu</button>
+    <button onclick="showAnswers()">📄 Lihat Jawaban</button>
+  </div>
+  <div id="answerPreview"></div>
+</div>
+
+<script>
+  const questions = [
+    { aksara: "ꦏ", options: ["ka", "ta", "pa", "sa"], answer: "ka" },
+    { aksara: "ꦧ", options: ["ba", "da", "ga", "na"], answer: "ba" },
+    { aksara: "ꦩ", options: ["ma", "la", "wa", "ha"], answer: "ma" },
+    { aksara: "ꦚ", options: ["nya", "ya", "ra", "nga"], answer: "nya" },
+    { aksara: "ꦗ", options: ["ja", "ca", "dha", "ka"], answer: "ja" },
+    { aksara: "ꦠ", options: ["ta", "sa", "ka", "na"], answer: "ta" },
+    { aksara: "ꦝ", options: ["dha", "tha", "da", "ba"], answer: "dha" },
+    { aksara: "ꦛ", options: ["tha", "ca", "sa", "wa"], answer: "tha" },
+    { aksara: "ꦲ", options: ["ha", "a", "pa", "ya"], answer: "ha" },
+    { aksara: "ꦤ", options: ["na", "ra", "ta", "sa"], answer: "na" }
+  ];
+
+  let currentQuestion = 0;
+  let score = 0;
+  let timer;
+  let timeLeft = 10;
+  let answered = false;
+  let answeredList = [];
+
+  function shuffle(array) {
+    return array.map(value => ({ value, sort: Math.random() }))
+                .sort((a, b) => a.sort - b.sort)
+                .map(({ value }) => value);
+  }
+
+  function startTimer() {
+    timeLeft = 10;
+    document.getElementById("timer").innerText = `⏱️ Waktu: ${timeLeft} detik`;
+    timer = setInterval(() => {
+      timeLeft--;
+      document.getElementById("timer").innerText = `⏱️ Waktu: ${timeLeft} detik`;
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        if (!answered) autoFail();
+      }
+    }, 1000);
+  }
+
+  function autoFail() {
+    const q = questions[currentQuestion];
+    const feedback = document.getElementById("feedback");
+    feedback.innerText = "⏰ Waktu habis! Jawaban: " + q.answer;
+    feedback.style.color = "red";
+    answeredList.push({ ...q, selected: null });
+    document.querySelectorAll(".choice-button").forEach(btn => btn.disabled = true);
+    setTimeout(nextQuestion, 1500);
+  }
+
+  function loadQuestion() {
+    answered = false;
+    clearInterval(timer);
+    startTimer();
+
+    const q = questions[currentQuestion];
+    document.getElementById("questionNumber").innerText = currentQuestion + 1;
+    document.getElementById("totalQuestions").innerText = questions.length;
+    document.getElementById("feedback").innerText = "";
+    document.getElementById("aksara").innerText = q.aksara;
+
+    const choicesDiv = document.getElementById("choices");
+    choicesDiv.innerHTML = "";
+    shuffle([...q.options]).forEach(option => {
+      const btn = document.createElement("button");
+      btn.innerText = option;
+      btn.className = "choice-button";
+      btn.onclick = () => checkAnswer(option);
+      choicesDiv.appendChild(btn);
+    });
+
+    const navDiv = document.getElementById("navigation");
+    navDiv.innerHTML = "";
+
+    if (currentQuestion > 0) {
+      const backBtn = document.createElement("button");
+      backBtn.innerText = "⬅️";
+      backBtn.onclick = () => {
+        currentQuestion--;
+        loadQuestion();
+      };
+      navDiv.appendChild(backBtn);
+    }
+
+    if (currentQuestion < questions.length - 1) {
+      const nextBtn = document.createElement("button");
+      nextBtn.innerText = "➡️";
+      nextBtn.onclick = nextQuestion;
+      navDiv.appendChild(nextBtn);
+    }
+  }
+
+  function checkAnswer(selected) {
+    if (answered) return;
+    answered = true;
+    clearInterval(timer);
+
+    const q = questions[currentQuestion];
+    const feedback = document.getElementById("feedback");
+    const correct = selected === q.answer;
+
+    if (correct) {
+      feedback.innerText = "✅ Benar!";
+      feedback.style.color = "green";
+      score += 10;
+      document.getElementById("score").innerText = score;
+    } else {
+      feedback.innerText = "❌ Salah! Jawaban: " + q.answer;
+      feedback.style.color = "red";
+    }
+
+    answeredList.push({ ...q, selected });
+    document.querySelectorAll(".choice-button").forEach(btn => btn.disabled = true);
+
+    setTimeout(() => {
+      if (currentQuestion < questions.length - 1) {
+        nextQuestion();
+      } else {
+        showEndScreen();
+      }
+    }, 1500);
+  }
+
+  function nextQuestion() {
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+      loadQuestion();
+    } else {
+      showEndScreen();
+    }
+  }
+
+  function showEndScreen() {
+    clearInterval(timer);
+    document.getElementById("gameContainer").style.display = "none";
+    document.getElementById("endScreen").style.display = "block";
+    document.getElementById("finalScore").innerText = score;
+  }
+
+  function showAnswers() {
+    const container = document.getElementById("answerPreview");
+    container.innerHTML = "<h3>📖 Rangkuman Jawaban:</h3>";
+    answeredList.forEach((item, i) => {
+      const userAnswer = item.selected ? item.selected : "<i>(Tidak dijawab)</i>";
+      const correct = item.selected === item.answer;
+      const color = correct ? "green" : "red";
+      container.innerHTML += `
+        <p><b>Soal ${i + 1}</b>: ${item.aksara} <br/>
+        Jawabanmu: <span style="color:${color}">${userAnswer}</span> | Kunci: <b>${item.answer}</b></p>
+      `;
+    });
+  }
+
+  function confirmHome() {
+    if (confirm("Yakin kembali ke menu utama? Progres akan hilang.")) {
+      location.href = 'sinau aksara jawa.html';
+    }
+  }
+
+  function toggleMode() {
+    document.body.classList.toggle("dark");
+  }
+
+  loadQuestion();
+</script>
+
+</body>
+</html>

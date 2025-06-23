@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Materi Aksara Jawa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-light: rgba(255, 255, 255, 0.85);
+      --bg-dark: rgba(0, 0, 0, 0.6);
+      --text-light: #333;
+      --text-dark: #f4f4f4;
+      --accent-light: #f4d35e;
+      --accent-dark: #444;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('materi game.gif') no-repeat center center fixed;
+      background-size: cover;
+      line-height: 1.6;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    header {
+      background-color: rgba(107, 76, 31, 0.85);
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .container {
+      padding: 30px;
+      max-width: 900px;
+      margin: auto;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      transition: background-color 0.3s;
+    }
+
+    h1, h2 {
+      color: #ffdf80;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      transition: background-color 0.3s;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #aaa;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f4d35e;
+      color: #4a2c0a;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 20px;
+      background-color: #f4d35e;
+      color: #4a2c0a;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #e0b548;
+    }
+
+    ul {
+      padding: 15px;
+      border-radius: 10px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.light-mode .container,
+    body.light-mode ul {
+      background-color: var(--bg-light);
+      color: var(--text-light);
+    }
+
+    body.dark-mode .container,
+    body.dark-mode ul {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    body.dark-mode table {
+      background-color: #222;
+      color: #eee;
+    }
+
+    #modeToggle {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.6);
+      border: none;
+      border-radius: 50%;
+      font-size: 1.4em;
+      padding: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+
+    body.dark-mode #modeToggle {
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <button id="modeToggle" title="Ganti Mode">🌙</button>
+  <header>
+    <h1>Materi Aksara Jawa</h1>
+  </header>
+  <div class="container">
+    <h2>Daftar Lengkap Pasangan Aksara Jawa</h2>
+    <div class="table-wrapper">
+      <table>
+        <tr><th>Latin</th><th>Aksara Jawa</th><th>Nama</th></tr>
+        <tr><td>a</td><td>ꦄ</td><td>ha</td></tr>
+        <tr><td>na</td><td>ꦤ</td><td>na</td></tr>
+        <tr><td>ca</td><td>ꦕ</td><td>ca</td></tr>
+        <tr><td>ra</td><td>ꦫ</td><td>ra</td></tr>
+        <tr><td>ka</td><td>ꦏ</td><td>ka</td></tr>
+        <tr><td>da</td><td>ꦢ</td><td>da</td></tr>
+        <tr><td>ta</td><td>ꦠ</td><td>ta</td></tr>
+        <tr><td>sa</td><td>ꦱ</td><td>sa</td></tr>
+        <tr><td>wa</td><td>ꦮ</td><td>wa</td></tr>
+        <tr><td>la</td><td>ꦭ</td><td>la</td></tr>
+        <tr><td>pa</td><td>ꦥ</td><td>pa</td></tr>
+        <tr><td>dha</td><td>ꦝ</td><td>dha</td></tr>
+        <tr><td>ja</td><td>ꦗ</td><td>ja</td></tr>
+        <tr><td>ya</td><td>ꦪ</td><td>ya</td></tr>
+        <tr><td>nya</td><td>ꦚ</td><td>nya</td></tr>
+        <tr><td>ma</td><td>ꦩ</td><td>ma</td></tr>
+        <tr><td>ga</td><td>ꦒ</td><td>ga</td></tr>
+        <tr><td>ba</td><td>ꦧ</td><td>ba</td></tr>
+        <tr><td>tha</td><td>ꦛ</td><td>tha</td></tr>
+        <tr><td>nga</td><td>ꦔ</td><td>nga</td></tr>
+      </table>
+    </div>
+
+    <h2>2. Aksara dan Pasangannya</h2>
+    <p class="keterangan">Setiap aksara memiliki pasangan yang digunakan untuk menulis konsonan ganda tanpa vokal di antaranya.</p>
+    <div class="table-wrapper">
+      <table>
+        <tr><th>Aksara Dasar</th><th>Pasangan</th><th>Contoh</th></tr>
+        <tr><td>ꦏ</td><td>꧀ꦏ</td><td>ꦲꦔ꧀ꦏ (angka)</td></tr>
+        <tr><td>ꦒ</td><td>꧀ꦒ</td><td>ꦥꦲ꧀ꦒꦺꦴ (pagyo)</td></tr>
+        <tr><td>ꦔ</td><td>꧀ꦔ</td><td>ꦭꦁꦒꦺꦴ (lango)</td></tr>
+        <tr><td>ꦕ</td><td>꧀ꦕ</td><td>ꦏꦤ꧀ꦕ (kanca)</td></tr>
+        <tr><td>ꦗ</td><td>꧀ꦗ</td><td>ꦭꦗ꧀ꦗ (lajri)</td></tr>
+        <tr><td>ꦚ</td><td>꧀ꦚ</td><td>ꦏꦼꦚ꧀ꦁ (kenyang)</td></tr>
+        <tr><td>ꦛ</td><td>꧀ꦛ</td><td>ꦭꦛꦶꦭ (lathil)</td></tr>
+        <tr><td>ꦝ</td><td>꧀ꦝ</td><td>ꦲꦫꦝ꧀ꦢ (aradha)</td></tr>
+        <tr><td>ꦠ</td><td>꧀ꦠ</td><td>ꦤ꧀ꦠꦺ (nte)</td></tr>
+        <tr><td>ꦢ</td><td>꧀ꦢ</td><td>ꦤ꧀ꦢꦸ (ndu)</td></tr>
+        <tr><td>ꦤ</td><td>꧀ꦤ</td><td>ꦭꦤꦁ (lanang)</td></tr>
+        <tr><td>ꦥ</td><td>꧀ꦥ</td><td>ꦥꦶꦥꦤ꧀ (pipan)</td></tr>
+        <tr><td>ꦧ</td><td>꧀ꦧ</td><td>ꦩ꧀ꦧꦃ (mbah)</td></tr>
+        <tr><td>ꦩ</td><td>꧀ꦩ</td><td>ꦲꦩ꧀ꦩ (amem)</td></tr>
+        <tr><td>ꦱ</td><td>꧀ꦱ</td><td>ꦥ꧀ꦱꦶ (psi)</td></tr>
+        <tr><td>ꦮ</td><td>꧀ꦮ</td><td>ꦥꦲ꧀ꦮꦤ (pawan)</td></tr>
+        <tr><td>ꦭ</td><td>꧀ꦭ</td><td>ꦒꦸꦭꦶꦏ (gulik)</td></tr>
+        <tr><td>ꦫ</td><td>꧀ꦫ</td><td>ꦭꦒ꧀ꦫ (lagra)</td></tr>
+        <tr><td>ꦪ</td><td>꧀ꦪ</td><td>ꦩꦲ꧀ꦪꦁ (manyang)</td></tr>
+      </table>
+    </div>
+
+    <h2>3. Sandhangan Aksara Jawa</h2>
+    <p class="keterangan">Sandhangan digunakan untuk menambahkan vokal atau konsonan pada aksara dasar.</p>
+    <div class="table-wrapper">
+      <table>
+        <tr><th>Nama</th><th>Simbol</th><th>Fungsi</th><th>Contoh</th></tr>
+        <tr><td>ꦶ</td><td>ꦶ</td><td>Vokal "i"</td><td>ꦥꦶ (pi)</td></tr>
+        <tr><td>ꦸ</td><td>ꦸ</td><td>Vokal "u"</td><td>ꦱꦸ (su)</td></tr>
+        <tr><td>ꦺ</td><td>ꦺ</td><td>Vokal "e"</td><td>ꦏꦺ (ke)</td></tr>
+        <tr><td>ꦼ</td><td>ꦼ</td><td>Vokal "ê" (pepet)</td><td>ꦧꦼ (bê)</td></tr>
+        <tr><td>ꦴ</td><td>ꦴ</td><td>Vokal "o"</td><td>ꦗꦺꦴ (jo)</td></tr>
+        <tr><td>꧀</td><td>꧀</td><td>Pangkon, mematikan vokal</td><td>ꦩ꧀ꦧꦃ (mbah)</td></tr>
+        <tr><td>ꦁ</td><td>ꦁ</td><td>Wignyan, bunyi "ng"</td><td>ꦲꦁ (ang)</td></tr>
+        <tr><td>ꦂ</td><td>ꦂ</td><td>Cecek, bunyi "r" akhir</td><td>ꦏꦂ (kar)</td></tr>
+      </table>
+    </div>
+    <a href="sinau aksara jawa.html" class="back-button">⬅ Kembali ke Menu</a>
+  </div>
+  <script>
+    const modeToggle = document.getElementById('modeToggle');
+    const userPref = localStorage.getItem('theme');
+
+    function setMode(mode) {
+      document.body.classList.remove('light-mode', 'dark-mode');
+      document.body.classList.add(mode);
+      modeToggle.innerText = mode === 'dark-mode' ? '☀️' : '🌙';
+      localStorage.setItem('theme', mode);
+    }
+
+    modeToggle.onclick = () => {
+      const current = document.body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode';
+      setMode(current === 'dark-mode' ? 'light-mode' : 'dark-mode');
+    };
+
+    window.onload = () => {
+      const mode = userPref || 'light-mode';
+      setMode(mode);
+    };
+  </script>
+</body>
+</html>

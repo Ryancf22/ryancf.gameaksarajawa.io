@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Game Edukasi Aksara Jawa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-light: rgba(255, 251, 230, 0.95);
+      --text-light: #5c3b00;
+      --button-gradient-light: linear-gradient(to right, #f4d35e, #faae2b);
+      --button-text-light: #4a2c0a;
+
+      --bg-dark: rgba(34, 34, 34, 0.95);
+      --text-dark: #f0f0f0;
+      --button-gradient-dark: linear-gradient(to right, #444, #666);
+      --button-text-dark: #fff;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: url('latar game.gif') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      transition: background-color 0.4s ease;
+    }
+
+    .menu-container {
+      margin-top: 60px;
+      padding: 40px 30px;
+      border-radius: 24px;
+      box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 30px;
+    }
+
+    .menu-button {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      margin: 12px 0;
+      font-size: 1.1em;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .menu-button:hover {
+      transform: translateY(-3px);
+      filter: brightness(1.1);
+    }
+
+    .bottom-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 30px;
+      align-items: center;
+    }
+
+    .materi-button, .home-button {
+      padding: 14px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      width: 240px;
+    }
+
+    .materi-button:hover, .home-button:hover {
+      transform: scale(1.05);
+    }
+
+    footer {
+      margin-top: 50px;
+      width: 100%;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      text-align: center;
+      padding: 16px 10px;
+      font-size: 0.9em;
+    }
+
+    /* Mode Terang */
+    .light-mode .menu-container {
+      background-color: var(--bg-light);
+    }
+
+    .light-mode h1 {
+      color: var(--text-light);
+    }
+
+    .light-mode .menu-button {
+      background: var(--button-gradient-light);
+      color: var(--button-text-light);
+    }
+
+    .light-mode .materi-button {
+      background: linear-gradient(135deg, #84cc16, #4d7c0f);
+      color: #fff;
+    }
+
+    .light-mode .home-button {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: #fff;
+    }
+
+    /* Mode Gelap */
+    .dark-mode .menu-container {
+      background-color: var(--bg-dark);
+    }
+
+    .dark-mode h1 {
+      color: var(--text-dark);
+    }
+
+    .dark-mode .menu-button {
+      background: var(--button-gradient-dark);
+      color: var(--button-text-dark);
+    }
+
+    .dark-mode .materi-button {
+      background: linear-gradient(135deg, #15803d, #166534);
+      color: #fff;
+    }
+
+    .dark-mode .home-button {
+      background: linear-gradient(135deg, #2563eb, #1e3a8a);
+      color: #fff;
+    }
+
+    /* Tombol Toggle Mode */
+    #modeToggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.6);
+      border: none;
+      border-radius: 50%;
+      font-size: 1.5em;
+      padding: 10px;
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+      transition: background 0.3s ease;
+      z-index: 999;
+    }
+
+    .dark-mode #modeToggle {
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <button id="modeToggle" title="Ganti Mode">🌙</button>
+
+  <div class="menu-container">
+    <h1>Sinau Aksara Jawa</h1>
+    <button class="menu-button" onclick="location.href='tebak aksara.html'">🧠 Tebak Aksara</button>
+    <button class="menu-button" onclick="location.href='pasangkan aksara.html'">🔗 Pasangkan Aksara</button>
+    <button class="menu-button" onclick="location.href='susun aksara.html'">🧩 Susun Aksara</button>
+  </div>
+
+  <div class="bottom-buttons">
+    <button class="materi-button" onclick="location.href='materi aksara.html'">📘 Materi Aksara Jawa</button>
+    <button class="home-button" onclick="location.href='mulai game sinau aksara jawa.html'">🏠 Kembali ke Beranda</button>
+  </div>
+
+  <footer>
+    © 2025 EDUTECH UNNES - Game Edukasi Aksara Jawa
+  </footer>
+
+  <script>
+    const modeToggle = document.getElementById('modeToggle');
+    const userPref = localStorage.getItem('theme');
+
+    function setMode(mode) {
+      document.body.classList.remove('light-mode', 'dark-mode');
+      document.body.classList.add(mode);
+      modeToggle.innerText = mode === 'dark-mode' ? '☀️' : '🌙';
+      localStorage.setItem('theme', mode);
+    }
+
+    modeToggle.onclick = () => {
+      const current = document.body.classList.contains('dark-mode') ? 'dark-mode' : 'light-mode';
+      setMode(current === 'dark-mode' ? 'light-mode' : 'dark-mode');
+    };
+
+    window.onload = () => {
+      const mode = userPref || 'light-mode';
+      setMode(mode);
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selamat Datang - Game Aksara Jawa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: url('latar game.gif') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      color: #fff;
+    }
+
+    .top-buttons {
+      position: absolute;
+      top: 15px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 2;
+    }
+
+    .icon-button {
+      background: rgba(255, 255, 255, 0.8);
+      color: #333;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 50%;
+      font-size: 1.2em;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      position: relative;
+    }
+
+    .icon-button:hover {
+      background-color: #f4d35e;
+    }
+
+    .popup {
+      display: none;
+      position: absolute;
+      top: 50px;
+      left: 0;
+      background: linear-gradient(to bottom right, #fffbe6, #ffe9a9);
+      color: #333;
+      padding: 25px;
+      border-radius: 14px;
+      width: 350px;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+      font-size: 1em;
+      z-index: 3;
+      text-align: left;
+    }
+
+    .popup p {
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .welcome-container {
+      background: rgba(0, 0, 0, 0.65);
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      max-width: 600px;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2em;
+      margin-bottom: 30px;
+    }
+
+    .start-button {
+      padding: 15px 30px;
+      font-size: 1.2em;
+      font-weight: bold;
+      background-color: #f4d35e;
+      color: #4a2c0a;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .start-button:hover {
+      background-color: #e0b548;
+      transform: scale(1.05);
+    }
+
+    footer {
+      position: absolute;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      color: #fff;
+      font-size: 0.9em;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 10px 0;
+      border-top: 1px solid #f4d35e;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-buttons">
+    <div style="position: relative;">
+      <button class="icon-button" onclick="togglePopup('infoPopup')" title="Info Game">📘</button>
+      <div id="infoPopup" class="popup">
+        <p><strong>🎮 Game Edukasi Aksara Jawa</strong> adalah media belajar interaktif berbasis permainan yang menyenangkan. Di dalamnya terdapat:<br><br>
+        ✅ Materi aksara dasar, pasangan, dan sandhangan.<br>
+        ✅ Permainan tebak, susun, dan pasangkan aksara.<br>
+        ✅ Ilustrasi dan tampilan ramah pengguna.<br><br>
+        Cocok untuk siswa SD hingga mahasiswa, serta umum yang ingin mengenal aksara Jawa lebih mudah dan menyenangkan!</p>
+      </div>
+    </div>
+
+    <div style="position: relative;">
+      <button class="icon-button" onclick="togglePopup('profilPopup')" title="Profil Developer">👨‍💻</button>
+      <div id="profilPopup" class="popup" style="right: 0; left: auto;">
+        <p><strong>👥 Developer:</strong><br><br>
+        <strong>Ryan Cahya Fitrianto</strong><br>
+        NIM: 1102422103<br>
+        Mahasiswa Teknologi Pendidikan<br><br>
+        <strong>Setiawan Hakim Utama</strong><br>
+        NIM: 1102422075<br>
+        Mahasiswa Teknologi Pendidikan</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="welcome-container">
+    <h1>🎉 Selamat Datang di Game Aksara Jawa 🎉</h1>
+    <p>Belajar aksara Jawa jadi lebih menyenangkan melalui permainan interaktif.</p>
+    <button class="start-button" onclick="location.href='sinau aksara jawa.html'">Mulai Bermain</button>
+  </div>
+
+  <footer>
+    © 2025 Game Edukasi Aksara Jawa
+  </footer>
+
+  <script>
+    function togglePopup(id) {
+      const popup = document.getElementById(id);
+      const isVisible = popup.style.display === 'block';
+      document.querySelectorAll('.popup').forEach(p => p.style.display = 'none');
+      popup.style.display = isVisible ? 'none' : 'block';
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.icon-button') && !e.target.closest('.popup')) {
+        document.querySelectorAll('.popup').forEach(p => p.style.display = 'none');
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Susun Aksara Jawa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Javanese&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: url('latar game.gif') no-repeat center center fixed;
+      background-size: cover;
+      color: #222;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    .game-container {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 700px;
+      width: 95%;
+      margin-top: 20px;
+      color: #222;
+    }
+    h1 {
+      margin-bottom: 10px;
+      color: #6a4e1a;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+      font-size: 1em;
+      color: #333;
+      flex-wrap: wrap;
+    }
+    .image-hint, .text-hint {
+      margin: 15px auto;
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+      border: 2px solid #ccc;
+      border-radius: 12px;
+    }
+    .text-hint {
+      font-size: 1.4em;
+      border: none;
+      height: auto;
+      color: #333;
+    }
+    .slot-container, .choices {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 20px 0;
+      gap: 10px;
+    }
+    .slot, .choice {
+      font-family: 'Noto Sans Javanese', sans-serif;
+      width: 60px;
+      height: 60px;
+      font-size: 2em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .slot {
+      background: #f1f1f1;
+      border: 2px dashed #aaa;
+    }
+    .choice {
+      background: #c8e6c9;
+      border: 2px solid #388e3c;
+    }
+    .filled {
+      background: #b2dfdb !important;
+      border-color: #00796b !important;
+    }
+    .feedback {
+      font-weight: bold;
+      margin-top: 15px;
+      font-size: 1.2em;
+    }
+    .controls {
+      margin-top: 20px;
+    }
+    button, select {
+      padding: 10px 16px;
+      margin: 5px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      background-color: #6ab04c;
+      color: white;
+      cursor: pointer;
+    }
+    .navigation {
+      margin-top: 20px;
+    }
+    .navigation button {
+      font-size: 1em;
+      padding: 10px 15px;
+      border: none;
+      background-color: #5c3d1c;
+      color: #fff;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .navigation button:hover {
+      background-color: #7a541c;
+    }
+    body.dark-mode {
+      background: #111;
+      color: #eee;
+    }
+    body.dark-mode .game-container {
+      background: #333;
+      color: #eee;
+      box-shadow: 0 8px 20px rgba(255,255,255,0.1);
+    }
+    body.dark-mode .slot {
+      background: #444;
+      color: #eee;
+      border-color: #888;
+    }
+    body.dark-mode .choice {
+      background: #666;
+      color: #fff;
+      border-color: #aaa;
+    }
+    body.dark-mode .choice.used {
+      opacity: 0.3;
+    }
+    body.dark-mode button, body.dark-mode select {
+      background-color: #333;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <h1>Susun Aksara Jawa</h1>
+    <div class="top-bar">
+      <div>Skor: <span id="score">0</span></div>
+      <div>Soal: <span id="levelNow">1</span> dari <span id="totalLevel">6</span></div>
+      <div>Mode:
+        <select id="modeSelect" onchange="resetGame()">
+          <option value="latihan">Latihan</option>
+          <option value="ujian">Ujian</option>
+        </select>
+        <select id="difficultySelect" onchange="resetGame()">
+          <option value="mudah">Mudah</option>
+          <option value="susah">Susah</option>
+        </select>
+        <button onclick="toggleDarkMode()">🌗 Gelap/Terang</button>
+      </div>
+    </div>
+    <img src="" id="hintImage" class="image-hint" alt="Petunjuk Gambar" style="display:none;"/>
+    <div id="textHint" class="text-hint"></div>
+    <div class="slot-container" id="slots"></div>
+    <div class="choices" id="choices"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="controls">
+      <button id="prevBtn" onclick="prevLevel()">Sebelumnya</button>
+      <button onclick="checkAnswer()">Cek Jawaban</button>
+      <button onclick="nextLevel()">Lanjut</button>
+    </div>
+  </div>
+
+  <audio id="audioBenar" src="https://cdn.pixabay.com/audio/2022/03/15/audio_1f173ec8e6.mp3"></audio>
+  <audio id="audioSalah" src="https://cdn.pixabay.com/audio/2022/03/15/audio_2703296fc0.mp3"></audio>
+
+  <div class="navigation">
+    <button onclick="location.href='sinau aksara jawa.html'">🏠 Menu Utama</button>
+  </div>
+
+  <script>
+    const levelsMudah = [
+      { hint: "Raja", img: "raja.jpg", aksara: ["ꦫ", "ꦗ", "ꦄ"] },
+      { hint: "Kaya", img: "kaya.jpg", aksara: ["ꦏ", "ꦪ", "ꦄ"] },
+      { hint: "Pada", img: "pada.jpg", aksara: ["ꦥ", "ꦢ", "ꦄ"] },
+      { hint: "Maca", img: "maca.jpg", aksara: ["ꦩ", "ꦕ", "ꦄ"] },
+      { hint: "Raga", img: "raga.jpg", aksara: ["ꦫ", "ꦒ", "ꦄ"] },
+      { hint: "Saya", img: "saya.jpg", aksara: ["ꦱ", "ꦪ", "ꦄ"] }
+    ];
+
+    const levelsSusah = [
+      { hint: "saya raga", aksara: ["ꦱ", "ꦪ", "ꦄ", "ꦫ", "ꦒ", "ꦄ"] },
+      { hint: "raja maca buku", aksara: ["ꦫ", "ꦗ", "ꦄ", "ꦩ", "ꦕ", "ꦄ", "ꦧ", "ꦸ", "ꦏ", "ꦸ"] },
+      { hint: "budi kaya pada saya", aksara: ["ꦧ", "ꦸ", "ꦢ", "ꦶ", "ꦏ", "ꦪ", "ꦄ", "ꦥ", "ꦢ", "ꦄ", "ꦱ", "ꦪ", "ꦄ"] },
+      { hint: "mangan sega lawuh", aksara: ["ꦩ", "ꦔ", "ꦤ", "ꦄ", "ꦱ", "ꦼ", "ꦒ", "ꦄ", "ꦭ", "ꦮ", "ꦸ", "ꦃ"] },
+      { hint: "kulo badhe tindak pasar", aksara: ["ꦏ", "ꦸ", "ꦭ", "ꦺ", "ꦧ", "ꦢ", "ꦺ", "ꦠ", "ꦶ", "ꦤ", "ꦢ", "ꦏ", "ꦥ", "ꦱ", "ꦫ"] },
+      { hint: "anak maca buku ing bale", aksara: ["ꦲ", "ꦤ", "ꦏ", "ꦩ", "ꦕ", "ꦧ", "ꦸ", "ꦏ", "ꦸ", "ꦲ", "ꦶ", "ꦁ", "ꦧ", "ꦭ", "ꦺ"] }
+    ];
+
+    let levels = levelsMudah;
+    let currentLevel = 0;
+    let currentAnswer = [];
+    let score = 0;
+    let mode = "latihan";
+    let difficulty = "mudah";
+
+    function resetGame() {
+      currentLevel = 0;
+      score = 0;
+      document.getElementById("score").innerText = score;
+      mode = document.getElementById("modeSelect").value;
+      difficulty = document.getElementById("difficultySelect").value;
+      levels = difficulty === "susah" ? levelsSusah : levelsMudah;
+      loadLevel();
+    }
+
+    function loadLevel() {
+      const levelData = levels[currentLevel];
+      currentAnswer = Array(levelData.aksara.length).fill("");
+      document.getElementById("levelNow").innerText = currentLevel + 1;
+      document.getElementById("totalLevel").innerText = levels.length;
+      document.getElementById("hintImage").style.display = levelData.img ? "block" : "none";
+      document.getElementById("hintImage").src = levelData.img || "";
+      document.getElementById("textHint").innerText = levelData.hint || "";
+      document.getElementById("feedback").innerText = "";
+      const slots = document.getElementById("slots");
+      const choices = document.getElementById("choices");
+      slots.innerHTML = "";
+      choices.innerHTML = "";
+      for (let i = 0; i < levelData.aksara.length; i++) {
+        const slot = document.createElement("div");
+        slot.className = "slot";
+        slot.dataset.index = i;
+        slot.onclick = () => removeFromSlot(i);
+        slots.appendChild(slot);
+      }
+      const shuffled = [...levelData.aksara].sort(() => Math.random() - 0.5);
+      shuffled.forEach(char => {
+        const ch = document.createElement("div");
+        ch.className = "choice";
+        ch.innerText = char;
+        ch.onclick = () => placeInSlot(char);
+        choices.appendChild(ch);
+      });
+      document.getElementById("prevBtn").style.visibility = currentLevel === 0 ? "hidden" : "visible";
+    }
+
+    function placeInSlot(char) {
+      for (let i = 0; i < currentAnswer.length; i++) {
+        if (currentAnswer[i] === "") {
+          currentAnswer[i] = char;
+          const slot = document.querySelector(`.slot[data-index="${i}"]`);
+          slot.innerText = char;
+          slot.classList.add("filled");
+          const choice = Array.from(document.querySelectorAll(".choice"))
+                            .find(c => c.innerText === char && !c.classList.contains("used"));
+          if (choice) {
+            choice.classList.add("used");
+            choice.style.visibility = "hidden";
+          }
+          break;
+        }
+      }
+    }
+
+    function removeFromSlot(index) {
+      const char = currentAnswer[index];
+      if (char === "") return;
+      const choice = Array.from(document.querySelectorAll(".choice"))
+                        .find(c => c.innerText === char && c.classList.contains("used"));
+      if (choice) {
+        choice.classList.remove("used");
+        choice.style.visibility = "visible";
+      }
+      currentAnswer[index] = "";
+      const slot = document.querySelector(`.slot[data-index="${index}"]`);
+      slot.innerText = "";
+      slot.classList.remove("filled");
+    }
+
+    function checkAnswer() {
+      const correct = levels[currentLevel].aksara.join("");
+      const player = currentAnswer.join("");
+      const feedback = document.getElementById("feedback");
+      if (player === correct) {
+        feedback.innerText = "✅ Benar!";
+        feedback.style.color = "green";
+        document.getElementById("audioBenar").play();
+        score += 10;
+        document.getElementById("score").innerText = score;
+      } else {
+        feedback.innerText = "❌ Salah.";
+        feedback.style.color = "red";
+        document.getElementById("audioSalah").play();
+        if (mode === "ujian") nextLevel();
+      }
+    }
+
+    function nextLevel() {
+      currentLevel++;
+      if (currentLevel < levels.length) {
+        loadLevel();
+      } else {
+        const feedback = document.getElementById("feedback");
+        feedback.innerHTML = "🎉 Game selesai! Total skor: " + score;
+        document.getElementById("hintImage").src = "";
+        document.getElementById("slots").innerHTML = "";
+        document.getElementById("choices").innerHTML = "";
+        if (mode === "ujian") {
+          let review = "<h2>Review Jawaban</h2><ul>";
+          levels.forEach(l => {
+            review += "<li>" + l.hint + ": " + l.aksara.join("") + "</li>";
+          });
+          review += "</ul>";
+          feedback.innerHTML += review;
+        }
+      }
+    }
+
+    function prevLevel() {
+      if (currentLevel > 0) {
+        currentLevel--;
+        loadLevel();
+      }
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    resetGame();
+  </script>
+</body>
+</html>
